@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组织社会学大富翁</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '🏢 💼 📊 🎯 💡 🚀';
+            position: fixed;
+            font-size: 3rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.05;
+            z-index: -1;
+            letter-spacing: 30px;
+            white-space: nowrap;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3),
+                        inset 0 -3px 0 rgba(0,0,0,0.1);
+            border: 4px solid #fff;
+        }
+
+        .board-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            gap: 8px;
+            width: 100%;
+            max-width: 650px;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 15px;
+            border-radius: 20px;
+            border: 5px solid #4a90a4;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1),
+                        0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .cell {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 3px solid #ddd;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .cell:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 5;
+        }
+
+        .cell-icon {
+            font-size: 1.8em;
+            margin-bottom: 3px;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
+        }
+
+        .cell.concept {
+            background: linear-gradient(145deg, #e3f2fd, #bbdefb);
+            border-color: #42a5f5;
+        }
+
+        .cell.concept:hover {
+            background: linear-gradient(145deg, #90caf9, #64b5f6);
+            transform: scale(1.1) rotate(-2deg);
+        }
+
+        .cell.theory {
+            background: linear-gradient(145deg, #fff3e0, #ffe0b2);
+            border-color: #ffa726;
+        }
+
+        .cell.theory:hover {
+            background: linear-gradient(145deg, #ffcc80, #ffb74d);
+            transform: scale(1.1) rotate(2deg);
+        }
+
+        .cell.chance {
+            background: linear-gradient(145deg, #fce4ec, #f8bbd0);
+            border-color: #ec407a;
+        }
+
+        .cell.chance:hover {
+            background: linear-gradient(145deg, #f48fb1, #f06292);
+            transform: scale(1.1) rotate(-3deg);
+        }
+
+        .cell.start {
+            background: linear-gradient(145deg, #66bb6a, #4caf50);
+            color: white;
+            font-weight: bold;
+            border-color: #43a047;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+
+        .cell.start:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.8);
+        }
+
+        .player-marker {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(238, 90, 90, 0.5);
+            position: absolute;
+            z-index: 10;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .player-marker::after {
+            content: '🚀';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1em;
+        }
+
+        .cell-content {
+            font-size: 0.75em;
+            line-height: 1.2;
+            word-wrap: break-word;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .dice-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(145deg, #fff, #f0f0f0);
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .dice {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border: 4px solid #333;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            transition: transform 0.1s;
+        }
+
+        .dice.rolling {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+        }
+
+        .roll-btn {
+            padding: 16px 40px;
+            font-size: 1.3em;
+            background: linear-gradient(145deg, #66bb6a, #4caf50);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: bold;
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .roll-btn:hover {
+            background: linear-gradient(145deg, #81c784, #66bb6a);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .roll-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        .roll-btn:disabled {
+            background: linear-gradient(145deg, #bdbdbd, #9e9e9e);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-panel {
+            background: linear-gradient(145deg, #f5f7fa, #e8eaf6);
+            border-radius: 20px;
+            padding: 20px;
+            border-left: 6px solid #667eea;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .info-panel h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            padding: 12px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .message-box {
+            background: linear-gradient(145deg, #fff9c4, #fff59d);
+            border-left: 6px solid #ff9800;
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 140px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .message-box h3 {
+            color: #e65100;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message-content {
+            margin-top: 12px;
+            line-height: 1.8;
+            color: #424242;
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 25px;
+            border: none;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .concept-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .concept-type {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .question {
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(8px);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .option-btn.correct {
+            background: linear-gradient(145deg, #66bb6a, #4caf50);
+            border-color: #43a047;
+            transform: scale(1.02);
+        }
+
+        .option-btn.incorrect {
+            background: linear-gradient(145deg, #ef5350, #f44336);
+            border-color: #e53935;
+            animation: shake 0.3s;
+        }
+
+        .option-letter {
+            background: rgba(255,255,255,0.3);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .reset-btn {
+            padding: 14px 30px;
+            background: linear-gradient(145deg, #ef5350, #f44336);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(145deg, #e53935, #ef5350);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+        }
+
+        .how-to-play {
+            background: linear-gradient(145deg, #e3f2fd, #bbdefb);
+            border-radius: 20px;
+            padding: 20px;
+            border-left: 6px solid #2196f3;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .how-to-play h3 {
+            color: #1565c0;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .how-to-play ul {
+            padding-left: 25px;
+            line-height: 2;
+        }
+
+        .how-to-play li {
+            margin-bottom: 8px;
+            color: #424242;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .game-board {
+                max-width: 100%;
+            }
+
+            .cell {
+                font-size: 0.6em;
+            }
+
+            .cell-icon {
+                font-size: 1.4em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .game-board {
+                gap: 4px;
+                padding: 8px;
+            }
+
+            .cell {
+                font-size: 0.5em;
+                padding: 2px;
+            }
+
+            .cell-icon {
+                font-size: 1.2em;
+            }
+
+            .dice {
+                width: 60px;
+                height: 60px;
+                font-size: 2em;
+            }
+
+            .roll-btn {
+                padding: 12px 25px;
+                font-size: 1.1em;
+            }
+        }
+
+        /* 粒子效果 */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            animation: fall linear forwards;
+            opacity: 0.7;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 组织社会学大富翁 🏢</h1>
+            <div class="subtitle">🌟 探索组织社会学的重要概念与理论 🌟</div>
+        </header>
+
+        <div class="game-container">
+            <div class="board-section">
+                <div class="game-board" id="gameBoard">
+                    <!-- 棋盘格子将由JavaScript生成 -->
+                </div>
+
+                <div class="controls">
+                    <div class="dice-section">
+                        <div class="dice" id="dice">⚀</div>
+                        <button class="roll-btn" id="rollBtn" onclick="rollDice()">
+                            🎲 掷骰子
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="info-panel">
+                    <h3>📊 玩家状态</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-icon">📍</div>
+                            <div class="stat-value" id="position">0</div>
+                            <div class="stat-label">当前位置</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-value" id="score">0</div>
+                            <div class="stat-label">知识积分</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-value" id="correctAnswers">0</div>
+                            <div class="stat-label">正确答题</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-value" id="totalQuestions">0</div>
+                            <div class="stat-label">总答题数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-box">
+                    <h3>💬 游戏消息</h3>
+                    <div class="message-content" id="messageBox">
+                        🎉 欢迎来到组织社会学大富翁！<br><br>🎲 点击"掷骰子"开始游戏，探索组织社会学的重要概念和理论！
+                    </div>
+                </div>
+
+                <div class="concept-card hidden" id="conceptCard">
+                    <div class="concept-type" id="conceptType">理论</div>
+                    <h3 id="conceptTitle">理论名称</h3>
+                    <div class="question" id="conceptQuestion">问题描述</div>
+                    <div class="options" id="conceptOptions">
+                        <!-- 选项将由JavaScript生成 -->
+                    </div>
+                </div>
+
+                <div class="how-to-play">
+                    <h3>📖 游戏说明</h3>
+                    <ul>
+                        <li>🎲 掷骰子移动，回答问题获得积分</li>
+                        <li>📘 概念格子：基础概念题 (+10分)</li>
+                        <li>📙 理论格子：核心理论题 (+20分)</li>
+                        <li>🎁 机会格子：随机事件 (±10分)</li>
+                        <li>🏆 累计100分完成学习之旅</li>
+                    </ul>
+                </div>
+
+                <button class="reset-btn" onclick="resetGame()">
+                    🔄 重新开始
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 游戏状态
+        let gameState = {
+            position: 0,
+            score: 0,
+            correctAnswers: 0,
+            totalQuestions: 0,
+            isMoving: false
+        };
+
+        // 棋盘格子配置（39个格子的环形路径）
+        const boardCells = [
+            { type: 'start', name: '起点', icon: '🏁' },
+            { type: 'concept', name: '组织', icon: '🏢' },
+            { type: 'concept', name: '科层制', icon: '📋' },
+            { type: 'theory', name: '韦伯理论', icon: '📚' },
+            { type: 'chance', name: '机会', icon: '🎁' },
+            { type: 'concept', name: '组织文化', icon: '🎨' },
+            { type: 'theory', name: '科学管理', icon: '⚙️' },
+            { type: 'concept', name: '组织结构', icon: '🏗️' },
+            { type: 'theory', name: '法约尔', icon: '👔' },
+            { type: 'chance', name: '机会', icon: '🎁' },
+            { type: 'concept', name: '权力', icon: '👑' },
+            { type: 'theory', name: '人际关系', icon: '🤝' },
+            { type: 'concept', name: '官僚主义', icon: '📁' },
+            { type: 'theory', name: '系统论', icon: '🔄' },
+            { type: 'chance', name: '机会', icon: '🎁' },
+            { type: 'concept', name: '组织学习', icon: '📖' },
+            { type: 'theory', name: '权变理论', icon: '🎯' },
+            { type: 'concept', name: '组织变革', icon: '🔄' },
+            { type: 'theory', name: '霍桑实验', icon: '💡' },
+            { type: 'chance', name: '机会', icon: '🎁' },
+            { type: 'concept', name: '组织环境', icon: '🌍' },
+            { type: 'theory', name: '社会网络', icon: '🕸️' },
+            { type: 'concept', name: '组织效率', icon: '⚡' },
+            { type: 'theory', name: '组织认同', icon: '❤️' },
+            { type: 'chance', name: '机会', icon: '🎁' },
+            { type: 'concept', name: '组织创新', icon: '💡' },
+            { type: 'theory', name: '制度理论', icon: '🏛️' },
+            { type: 'concept', name: '组织发展', icon: '📈' },
+            { type: 'theory', name: '领导力', icon: '👨‍💼' },
+            { type: 'chance', name: '机会', icon: '🎁' },
+            { type: 'concept', name: '团队合作', icon: '👥' },
+            { type: 'theory', name: '激励理论', icon: '🎯' },
+            { type: 'concept', name: '决策', icon: '🤔' },
+            { type: 'theory', name: '组织沟通', icon: '📢' },
+            { type: 'chance', name: '机会', icon: '🎁' },
+            { type: 'concept', name: '组织控制', icon: '🎛️' },
+            { type: 'theory', name: '资源依赖', icon: '🔗' },
+            { type: 'concept', name: '组织战略', icon: '♟️' },
+            { type: 'theory', name: '利益相关者', icon: '👥' }
+        ];
+
+        // 棋盘格子位置映射（环形路径 - 39个格子）
+        const cellPositions = [
+            // 外圈底部（左到右）- 10个
+            [4, 0], [4, 1], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6], [4, 7], [4, 8], [4, 9],
+            // 外圈右侧（下到上）- 4个
+            [3, 9], [2, 9], [1, 9], [0, 9],
+            // 外圈顶部（右到左）- 9个
+            [0, 8], [0, 7], [0, 6], [0, 5], [0, 4], [0, 3], [0, 2], [0, 1], [0, 0],
+            // 外圈左侧（上到下）- 3个
+            [1, 0], [2, 0], [3, 0],
+            // 内圈底部（左到右）- 1个
+            [3, 1],
+            // 内圈右侧（下到上）- 5个
+            [3, 2], [3, 3], [3, 4], [3, 5], [3, 6],
+            // 内圈顶部（右到左）- 2个
+            [2, 6], [1, 6],
+            // 内圈左侧（上到下）- 5个，最后 [2, 1] 紧邻起点 [4, 0]
+            [1, 5], [1, 4], [1, 3], [1, 2], [2, 1]
+        ];
+
+        // 组织社会学概念和理论问题库
+        const conceptQuestions = {
+            '组织': {
+                question: '组织社会学中，"组织"最基本的特征是什么？',
+                options: [
+                    '有明确的目标',
+                    '有严格的层级结构',
+                    '有大量的员工',
+                    '有复杂的制度'
+                ],
+                correct: 0,
+                points: 10
+            },
+            '科层制': {
+                question: '科层制的核心特征不包括以下哪项？',
+                options: [
+                    '明确的分工',
+                    '等级森严的权力体系',
+                    '基于个人关系的晋升',
+                    '正式的规章制度'
+                ],
+                correct: 2,
+                points: 10
+            },
+            '组织文化': {
+                question: '组织文化的三个层次不包括？',
+                options: [
+                    '表层文化（物质文化）',
+                    '中间层文化（制度文化）',
+                    '深层文化（精神文化）',
+                    '外部文化（市场文化）'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '组织结构': {
+                question: '以下哪种不是常见的组织结构类型？',
+                options: [
+                    '职能型结构',
+                    '事业部制结构',
+                    '矩阵型结构',
+                    '随机型结构'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '权力': {
+                question: '在组织社会学中，权力的来源不包括？',
+                options: [
+                    '法定权力',
+                    '奖赏权力',
+                    '专家权力',
+                    '强制权力以外的权力'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '官僚主义': {
+                question: '官僚主义的负面表现不包括？',
+                options: [
+                    '程序繁琐',
+                    '效率低下',
+                    '灵活应变',
+                    '推诿责任'
+                ],
+                correct: 2,
+                points: 10
+            },
+            '组织学习': {
+                question: '组织学习的主要形式不包括？',
+                options: [
+                    '单环学习',
+                    '双环学习',
+                    '三环学习',
+                    '四环学习'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '组织变革': {
+                question: '组织变革的主要动因不包括？',
+                options: [
+                    '技术变革',
+                    '市场竞争',
+                    '保持现状',
+                    '法律法规'
+                ],
+                correct: 2,
+                points: 10
+            },
+            '组织环境': {
+                question: '组织环境的类型不包括？',
+                options: [
+                    '一般环境',
+                    '任务环境',
+                    '内部环境',
+                    '虚拟环境'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '组织效率': {
+                question: '衡量组织效率的主要指标不包括？',
+                options: [
+                    '产出投入比',
+                    '目标达成度',
+                    '员工满意度',
+                    '组织规模'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '组织创新': {
+                question: '组织创新的主要类型不包括？',
+                options: [
+                    '技术创新',
+                    '管理创新',
+                    '制度创新',
+                    '守旧创新'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '组织发展': {
+                question: '组织发展的主要目标不包括？',
+                options: [
+                    '提高组织效能',
+                    '增强员工满意度',
+                    '促进组织学习',
+                    '扩大组织规模'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '团队合作': {
+                question: '有效团队合作的关键要素不包括？',
+                options: [
+                    '共同目标',
+                    '相互信任',
+                    '角色分工',
+                    '个人英雄主义'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '决策': {
+                question: '组织决策的类型不包括？',
+                options: [
+                    '程序化决策',
+                    '非程序化决策',
+                    '集体决策',
+                    '随机决策'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '组织控制': {
+                question: '组织控制的主要方法不包括？',
+                options: [
+                    '产出控制',
+                    '行为控制',
+                    '文化控制',
+                    '自由控制'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '组织战略': {
+                question: '组织战略的层次不包括？',
+                options: [
+                    '公司层战略',
+                    '业务层战略',
+                    '职能层战略',
+                    '个人层战略'
+                ],
+                correct: 3,
+                points: 10
+            }
+        };
+
+        const theoryQuestions = {
+            '韦伯理论': {
+                question: '韦伯认为科层制组织的核心特征是什么？',
+                options: [
+                    '基于传统权威',
+                    '基于个人魅力权威',
+                    '基于法理型权威',
+                    '基于民主决策'
+                ],
+                correct: 2,
+                points: 20
+            },
+            '科学管理': {
+                question: '泰勒科学管理的核心思想不包括？',
+                options: [
+                    '工作标准化',
+                    '时间研究',
+                    '差别计件工资制',
+                    '重视员工情感需求'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '法约尔': {
+                question: '法约尔提出的14条管理原则不包括？',
+                options: [
+                    '分工',
+                    '权力集中',
+                    '团队精神',
+                    '最大利润原则'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '人际关系': {
+                question: '人际关系学派的主要观点是什么？',
+                options: [
+                    '工人是经济人',
+                    '工人是社会人',
+                    '工人是理性人',
+                    '工人是工具人'
+                ],
+                correct: 1,
+                points: 20
+            },
+            '系统论': {
+                question: '组织系统论认为组织具有以下特征，除了？',
+                options: [
+                    '整体性',
+                    '开放性',
+                    '动态性',
+                    '封闭性'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '权变理论': {
+                question: '权变理论的核心观点是？',
+                options: [
+                    '存在一种最佳的管理方式',
+                    '管理方式应根据环境和组织特征调整',
+                    '管理应该遵循固定的原则',
+                    '管理完全取决于领导者个人'
+                ],
+                correct: 1,
+                points: 20
+            },
+            '霍桑实验': {
+                question: '霍桑实验的主要发现不包括？',
+                options: [
+                    '社会因素影响生产效率',
+                    '非正式组织的作用',
+                    '员工情感的重要性',
+                    '工资越高效率越高'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '社会网络': {
+                question: '社会网络理论强调组织中的关键要素是？',
+                options: [
+                    '个人属性',
+                    '人际关系',
+                    '制度规范',
+                    '资源分配'
+                ],
+                correct: 1,
+                points: 20
+            },
+            '组织认同': {
+                question: '组织认同的主要表现形式不包括？',
+                options: [
+                    '认知认同',
+                    '情感认同',
+                    '评价认同',
+                    '经济认同'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '制度理论': {
+                question: '新制度主义理论强调组织的什么特征？',
+                options: [
+                    '技术效率',
+                    '制度合法性',
+                    '经济理性',
+                    '市场竞争力'
+                ],
+                correct: 1,
+                points: 20
+            },
+            '领导力': {
+                question: '领导风格的主要类型不包括？',
+                options: [
+                    '专制型领导',
+                    '民主型领导',
+                    '放任型领导',
+                    '混乱型领导'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '激励理论': {
+                question: '马斯洛需求层次理论不包括？',
+                options: [
+                    '生理需求',
+                    '安全需求',
+                    '社交需求',
+                    '贪婪需求'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '组织沟通': {
+                question: '组织沟通的主要障碍不包括？',
+                options: [
+                    '语言障碍',
+                    '心理障碍',
+                    '文化障碍',
+                    '沟通越多越好'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '资源依赖': {
+                question: '资源依赖理论的核心观点是？',
+                options: [
+                    '组织完全独立',
+                    '组织必须依赖外部资源',
+                    '组织资源无限',
+                    '组织不需要任何资源'
+                ],
+                correct: 1,
+                points: 20
+            },
+            '利益相关者': {
+                question: '组织的利益相关者不包括？',
+                options: [
+                    '员工',
+                    '客户',
+                    '供应商',
+                    '完全无关的人'
+                ],
+                correct: 3,
+                points: 20
+            }
+        };
+
+        // 机会卡片
+        const chanceCards = [
+            { message: '🎉 恭喜！你成功实施了一项组织变革，获得10分！', points: 10 },
+            { message: '😢 糟糕！组织遇到了严重的官僚主义问题，失去10分。', points: -10 },
+            { message: '🌟 优秀！你的组织学习能力强，获得10分！', points: 10 },
+            { message: '⚠️ 注意！组织文化冲突导致效率下降，失去10分。', points: -10 },
+            { message: '💡 太棒了！组织创新成功，获得10分！', points: 10 },
+            { message: '📉 遗憾！外部环境变化导致组织面临挑战，失去10分。', points: -10 },
+            { message: '✨ 干得好！组织结构优化完成，获得10分！', points: 10 },
+            { message: '😤 糟糕！权力斗争影响了组织运行，失去10分。', points: -10 },
+            { message: '🎯 完美！你成功处理了组织危机，获得15分！', points: 15 },
+            { message: '🚀 惊喜！你的领导力得到认可，获得15分！', points: 15 }
+        ];
+
+        // 初始化游戏棋盘
+        function initGameBoard() {
+            const board = document.getElementById('gameBoard');
+            board.innerHTML = '';
+
+            // 创建10x10网格
+            for (let i = 0; i < 100; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+
+                // 检查这个位置是否在环形路径上
+                const cellIndex = cellPositions.findIndex(pos => pos[0] === Math.floor(i / 10) && pos[1] === i % 10);
+
+                if (cellIndex !== -1) {
+                    const cellData = boardCells[cellIndex];
+                    cell.className += ` ${cellData.type}`;
+                    cell.dataset.index = cellIndex;
+
+                    // 添加图标
+                    const icon = document.createElement('div');
+                    icon.className = 'cell-icon';
+                    icon.textContent = cellData.icon;
+                    cell.appendChild(icon);
+
+                    // 添加内容
+                    const content = document.createElement('div');
+                    content.className = 'cell-content';
+                    content.textContent = cellData.name;
+                    cell.appendChild(content);
+
+                    if (cellIndex === 0) {
+                        // 添加玩家标记到起点
+                        const marker = document.createElement('div');
+                        marker.className = 'player-marker';
+                        marker.id = 'playerMarker';
+                        cell.appendChild(marker);
+                    }
+                } else {
+                    cell.style.visibility = 'hidden';
+                }
+
+                board.appendChild(cell);
+            }
+
+            updateStats();
+        }
+
+        // 掷骰子
+        function rollDice() {
+            if (gameState.isMoving) return;
+
+            gameState.isMoving = true;
+            const rollBtn = document.getElementById('rollBtn');
+            rollBtn.disabled = true;
+
+            const dice = document.getElementById('dice');
+            dice.classList.add('rolling');
+
+            let rollCount = 0;
+            const maxRolls = 15;
+            const rollInterval = setInterval(() => {
+                const randomValue = Math.floor(Math.random() * 6) + 1;
+                const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+                dice.textContent = diceFaces[randomValue - 1];
+                rollCount++;
+
+                if (rollCount >= maxRolls) {
+                    clearInterval(rollInterval);
+                    const finalValue = randomValue;
+                    dice.classList.remove('rolling');
+                    setTimeout(() => {
+                        movePlayer(finalValue);
+                    }, 300);
+                }
+            }, 80);
+        }
+
+        // 移动玩家
+        function movePlayer(steps) {
+            const newPosition = (gameState.position + steps) % boardCells.length;
+            const oldPosition = gameState.position;
+
+            // 更新位置
+            gameState.position = newPosition;
+
+            // 移动玩家标记
+            const board = document.getElementById('gameBoard');
+            const cells = board.querySelectorAll('.cell');
+
+            // 从旧位置移除标记
+            const oldPos = cellPositions[oldPosition];
+            if (oldPos) {
+                const oldCellIndex = oldPos[0] * 10 + oldPos[1];
+                const oldCell = cells[oldCellIndex];
+                if (oldCell) {
+                    const marker = oldCell.querySelector('.player-marker');
+                    if (marker) marker.remove();
+                }
+            }
+
+            // 在新位置添加标记
+            const newPos = cellPositions[newPosition];
+            if (newPos) {
+                const newCellIndex = newPos[0] * 10 + newPos[1];
+                const newCell = cells[newCellIndex];
+                if (newCell) {
+                    const marker = document.createElement('div');
+                    marker.className = 'player-marker';
+                    marker.id = 'playerMarker';
+                    newCell.appendChild(marker);
+                }
+            }
+
+            updateStats();
+
+            // 处理格子事件
+            setTimeout(() => {
+                handleCellEvent(boardCells[newPosition]);
+            }, 600);
+        }
+
+        // 处理格子事件
+        function handleCellEvent(cell) {
+            const messageBox = document.getElementById('messageBox');
+
+            switch (cell.type) {
+                case 'concept':
+                    showQuestion(cell.name, 'concept');
+                    break;
+                case 'theory':
+                    showQuestion(cell.name, 'theory');
+                    break;
+                case 'chance':
+                    handleChance();
+                    break;
+                case 'start':
+                    messageBox.innerHTML = `🏁 你回到了起点！<br><br>🌟 继续探索组织社会学的知识吧！`;
+                    resetGameState();
+                    break;
+            }
+        }
+
+        // 显示问题
+        function showQuestion(conceptName, type) {
+            const questions = type === 'concept' ? conceptQuestions : theoryQuestions;
+            const questionData = questions[conceptName];
+
+            if (!questionData) {
+                document.getElementById('messageBox').textContent = `没有找到关于${conceptName}的问题`;
+                resetGameState();
+                return;
+            }
+
+            const conceptCard = document.getElementById('conceptCard');
+            const conceptType = document.getElementById('conceptType');
+            const conceptTitle = document.getElementById('conceptTitle');
+            const conceptQuestion = document.getElementById('conceptQuestion');
+            const conceptOptions = document.getElementById('conceptOptions');
+
+            conceptType.textContent = type === 'concept' ? '📘 概念题 (+10分)' : '📙 理论题 (+20分)';
+            conceptTitle.textContent = conceptName;
+            conceptQuestion.textContent = questionData.question;
+
+            conceptOptions.innerHTML = '';
+            questionData.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+
+                const letter = document.createElement('div');
+                letter.className = 'option-letter';
+                letter.textContent = String.fromCharCode(65 + index);
+                btn.appendChild(letter);
+
+                const text = document.createElement('span');
+                text.textContent = option;
+                btn.appendChild(text);
+
+                btn.onclick = () => handleAnswer(index, questionData, conceptName);
+                conceptOptions.appendChild(btn);
+            });
+
+            conceptCard.classList.remove('hidden');
+        }
+
+        // 处理回答
+        function handleAnswer(selectedIndex, questionData, conceptName) {
+            const isCorrect = selectedIndex === questionData.correct;
+            gameState.totalQuestions++;
+
+            const options = document.querySelectorAll('.option-btn');
+            options[selectedIndex].classList.add(isCorrect ? 'correct' : 'incorrect');
+            options[questionData.correct].classList.add('correct');
+
+            setTimeout(() => {
+                if (isCorrect) {
+                    gameState.score += questionData.points;
+                    gameState.correctAnswers++;
+                    document.getElementById('messageBox').innerHTML = `✅ 正确！你获得了${questionData.points}分！<br><br>💡 关于${conceptName}：${questionData.options[questionData.correct].substring(3)}`;
+                } else {
+                    document.getElementById('messageBox').innerHTML = `❌ 回答错误！<br><br>💡 正确答案是：${questionData.options[questionData.correct].substring(3)}<br><br>💪 继续加油！`;
+                }
+
+                document.getElementById('conceptCard').classList.add('hidden');
+                updateStats();
+                checkWinCondition();
+                resetGameState();
+            }, 1500);
+        }
+
+        // 处理机会
+        function handleChance() {
+            const randomCard = chanceCards[Math.floor(Math.random() * chanceCards.length)];
+            gameState.score += randomCard.points;
+
+            document.getElementById('messageBox').innerHTML = randomCard.message;
+            updateStats();
+            checkWinCondition();
+            resetGameState();
+        }
+
+        // 重置游戏状态
+        function resetGameState() {
+            gameState.isMoving = false;
+            document.getElementById('rollBtn').disabled = false;
+            document.getElementById('conceptCard').classList.add('hidden');
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            document.getElementById('position').textContent = gameState.position;
+            document.getElementById('score').textContent = gameState.score;
+            document.getElementById('correctAnswers').textContent = gameState.correctAnswers;
+            document.getElementById('totalQuestions').textContent = gameState.totalQuestions;
+        }
+
+        // 检查胜利条件
+        function checkWinCondition() {
+            if (gameState.score >= 100) {
+                createCelebration();
+                document.getElementById('messageBox').innerHTML = `🎉🎉🎉 恭喜你！你已经成功获得了100分！🎉🎉🎉<br><br>🏆 你完成了组织社会学的学习之旅！🏆<br><br>✅ 正确答题：${gameState.correctAnswers}/${gameState.totalQuestions}<br><br>📚 你现在是组织社会学大师了！`;
+                document.getElementById('rollBtn').disabled = true;
+            }
+        }
+
+        // 创建庆祝效果
+        function createCelebration() {
+            const emojis = ['🎉', '🎊', '⭐', '🌟', '💫', '🏆', '🎁', '🎈', '💖', '✨'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    particle.style.left = Math.random() * 100 + 'vw';
+                    particle.style.fontSize = (Math.random() * 2 + 1) + 'em';
+                    particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    document.body.appendChild(particle);
+
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 5000);
+                }, i * 100);
+            }
+        }
+
+        // 重置游戏
+        function resetGame() {
+            gameState = {
+                position: 0,
+                score: 0,
+                correctAnswers: 0,
+                totalQuestions: 0,
+                isMoving: false
+            };
+
+            initGameBoard();
+            document.getElementById('messageBox').innerHTML = '🔄 游戏已重置！<br><br>🎲 点击"掷骰子"开始新的学习之旅！';
+            document.getElementById('conceptCard').classList.add('hidden');
+            document.getElementById('rollBtn').disabled = false;
+        }
+
+        // 初始化游戏
+        window.onload = function() {
+            initGameBoard();
+        };
+    </script>
+</body>
+</html>

@@ -8,6 +8,13 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script>
+        // 检查 Firebase SDK 是否加载成功
+        window.firebaseLoaded = typeof firebase !== 'undefined' && firebase.app;
+        if (!window.firebaseLoaded) {
+            console.warn('Firebase SDK 加载失败，将使用本地存储模式');
+        }
+    </script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');

@@ -1240,9 +1240,14 @@
                     </ul>
                 </div>
 
-                <button class="reset-btn" onclick="resetGame()">
-                    🔄 重新开始
-                </button>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button class="reset-btn" onclick="manualSaveScore()" style="flex: 1; background: linear-gradient(145deg, #4caf50, #388e3c);">
+                        💾 保存进度
+                    </button>
+                    <button class="reset-btn" onclick="resetGame()" style="flex: 1;">
+                        🔄 重新开始
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1548,7 +1553,8 @@
 
         // 保存成绩到排行榜
         async function saveScore() {
-            if (!currentPlayer.studentId || gameState.score < 100) return;
+            // 允许任何分数保存（至少有分数）
+            if (!currentPlayer.studentId || gameState.score <= 0) return;
 
             const endTime = new Date();
             const startTime = new Date(gameState.startTime);
@@ -2448,6 +2454,35 @@
                     }, 5000);
                 }, i * 100);
             }
+        }
+
+        // 手动保存成绩
+        async function manualSaveScore() {
+            if (!currentPlayer.studentId) {
+                alert('请先登录！');
+                return;
+            }
+            
+            if (gameState.score <= 0) {
+                alert('您还没有获得分数，请先玩游戏！');
+                return;
+            }
+            
+            const confirmed = confirm(`当前分数：${gameState.score}分\n\n确定要保存当前成绩吗？\n（如果已有更高分的记录，将不会更新）`);
+            if (!confirmed) return;
+            
+            await saveScore();
+            
+            const messageBox = document.getElementById('messageBox');
+            messageBox.innerHTML = `
+                ✅ 成绩已保存！<br><br>
+                📊 当前成绩：<br>
+                • 学号：${currentPlayer.studentId}<br>
+                • 姓名：${currentPlayer.name}<br>
+                • 分数：${gameState.score}分<br>
+                • 正确率：${gameState.totalQuestions > 0 ? Math.round((gameState.correctAnswers / gameState.totalQuestions) * 100) : 0}%<br><br>
+                ${gameState.score >= 100 ? '🎉 恭喜完成学习之旅！' : '💪 继续加油，向100分努力！'}
+            `;
         }
 
         // 重置游戏

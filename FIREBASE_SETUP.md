@@ -56,6 +56,7 @@
 const firebaseConfig = {
   apiKey: "AIzaSyxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
   authDomain: "project-id.firebaseapp.com",
+  databaseURL: "https://project-id-default-rtdb.firebaseio.com",
   projectId: "project-id",
   storageBucket: "project-id.appspot.com",
   messagingSenderId: "1234567890",
@@ -66,16 +67,22 @@ const firebaseConfig = {
 **字段说明**：
 - `apiKey`：以 `AIzaSy` 开头
 - `authDomain`：格式为 `项目ID.firebaseapp.com`
+- `databaseURL`：**重要！** 格式为 `https://项目ID-default-rtdb.firebaseio.com`（可在 Realtime Database 页面顶部找到）
 - `projectId`：你的 Firebase 项目 ID
 - `storageBucket`：格式为 `项目ID.appspot.com`
 - `messagingSenderId`：纯数字
 - `appId`：以 `1:` 开头，包含 `web:` 字符串
 
+> ⚠️ **重要**：`databaseURL` 是 Realtime Database 必需的配置项！如果配置信息中没有此项，请按以下步骤获取：
+> 1. 在 Firebase Console 中打开 **Realtime Database**
+> 2. 点击 **"数据"** 标签
+> 3. 在页面顶部可以看到数据库 URL（格式：`https://项目ID-default-rtdb.firebaseio.com`）
+
 ### 步骤 5：在游戏中配置 Firebase
 
 1. 打开游戏网页
 2. 点击排行榜旁边的 **"⚙️ 配置 Realtime Database"** 按钮
-3. 将复制的配置信息填入对应字段
+3. 将复制的配置信息填入对应字段（**特别注意填写数据库 URL**）
 4. 点击 **"✅ 保存配置"**
 5. 等待看到 **"✅ Firebase 配置成功"** 提示
 

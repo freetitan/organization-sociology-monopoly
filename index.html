@@ -1393,28 +1393,10 @@
             }
 
             try {
-                // 先删除已存在的 Firebase 应用
-                if (db) {
-                    try {
-                        await db.terminate();
-                    } catch (e) {
-                        console.log('终止旧连接', e);
-                    }
-                }
-
-                // 检查是否已初始化，如果已初始化则先删除
-                try {
-                    const existingApp = firebase.app();
-                    if (existingApp) {
-                        await existingApp.delete();
-                    }
-                } catch (e) {
-                    // 没有已存在的应用，继续
-                }
-
-                // 初始化 Firebase
-                firebase.initializeApp(config);
-                db = firebase.database();
+                // 使用临时应用名称测试连接（不影响已存在的应用）
+                const tempAppName = 'test_' + Date.now();
+                const tempApp = firebase.initializeApp(config, tempAppName);
+                const tempDb = tempApp.database();
 
                 // 测试连接
                 status.style.display = 'block';
@@ -1422,7 +1404,7 @@
                 status.textContent = '⏳ 正在测试 Firebase 连接...';
 
                 // 写入测试数据
-                const testRef = db.ref('test/connection');
+                const testRef = tempDb.ref('test/connection');
                 await testRef.set({ test: true, timestamp: new Date().toISOString() });
 
                 // 读取测试数据
@@ -1432,9 +1414,24 @@
                     await testRef.remove();
                 }
 
+                // 删除临时应用
+                await tempApp.delete();
+
+                // 测试成功，删除旧配置并重新初始化默认应用
+                try {
+                    const existingApp = firebase.app();
+                    await existingApp.delete();
+                } catch (e) {
+                    console.log('没有旧应用需要删除');
+                }
+
+                // 初始化新的默认应用
+                firebase.initializeApp(config);
+                db = firebase.database();
+                useFirebase = true;
+
                 // 保存配置
                 localStorage.setItem(firebaseConfigKey, JSON.stringify(config));
-                useFirebase = true;
 
                 status.style.display = 'block';
                 status.className = 'firebase-status success';

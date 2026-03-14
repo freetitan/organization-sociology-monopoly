@@ -1,6 +1,6 @@
-# Firebase 配置指南
+# Firebase Realtime Database 配置指南
 
-本指南将帮助你配置 Firebase，使游戏能够将所有学生的成绩保存到云端，实现实时排行榜功能。
+本指南将帮助你配置 Firebase Realtime Database，使游戏能够将所有学生的成绩保存到云端，实现实时排行榜功能。
 
 ## 📋 前置要求
 
@@ -20,9 +20,9 @@
 5. 点击 **"创建项目"**
 6. 等待项目创建完成（约 30 秒）
 
-### 步骤 2：创建 Firestore 数据库
+### 步骤 2：创建 Realtime Database
 
-1. 在 Firebase 控制台左侧菜单，找到 **"Firestore Database"**
+1. 在 Firebase 控制台左侧菜单，找到 **"Realtime Database"**
 2. 点击 **"创建数据库"**
 3. 选择 **"以测试模式启动"**（生产环境需要设置安全规则）
 4. 选择数据库位置（推荐默认的 `nam5 (us-central)` 或选择 `asia-east1` 如果在中国）
@@ -30,24 +30,21 @@
 
 ### 步骤 3：设置数据库规则
 
-1. 在 Firestore → **规则** 页面
+1. 在 Realtime Database → **规则** 页面
 2. 删除默认规则，粘贴以下内容：
 
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read: if true;
-      allow write: if request.time < timestamp.date(2025, 1, 1);
-    }
+```json
+{
+  "rules": {
+    ".read": true,
+    ".write": true
   }
 }
 ```
 
 3. 点击 **"发布"**
 
-> ⚠️ **注意**：这是测试规则，允许在 2025 年 1 月 1 日前读写。如需长期使用，请设置更严格的规则。
+> ⚠️ **注意**：这是测试规则，允许任何人读写。如需长期使用，请设置更严格的规则。
 
 ### 步骤 4：获取 Firebase 配置信息
 
@@ -77,7 +74,7 @@ const firebaseConfig = {
 ### 步骤 5：在游戏中配置 Firebase
 
 1. 打开游戏网页
-2. 点击排行榜旁边的 **"⚙️ 配置云端"** 按钮
+2. 点击排行榜旁边的 **"⚙️ 配置 Realtime Database"** 按钮
 3. 将复制的配置信息填入对应字段
 4. 点击 **"✅ 保存配置"**
 5. 等待看到 **"✅ Firebase 配置成功"** 提示
@@ -97,40 +94,51 @@ const firebaseConfig = {
 ### 方法 2：在 Firebase Console 查看
 
 1. 打开 Firebase Console
-2. 进入 **Firestore Database**
-3. 点击 **"scores"** 集合
+2. 进入 **Realtime Database**
+3. 点击 **"scores"** 节点
 4. 可以看到所有学生的成绩记录
 
 ### 方法 3：导出数据
 
-1. 在 Firestore Database 中
-2. 选择数据或表
-3. 点击 **"导出数据"**（三个点菜单）
-4. 可以导出为 JSON 格式
+1. 在 Realtime Database 中
+2. 选择 **"数据"** 标签
+3. 点击右上角的 **三个点**（⋮）菜单
+4. 选择 **"导出 JSON"**
 
 ## 🔒 安全建议（可选）
 
 如果用于正式课程，建议设置更严格的规则：
 
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /scores/{scoreId} {
-      allow read: if true;  // 所有人可读
-      allow write: if request.auth != null;  // 只有认证用户可写
+```json
+{
+  "rules": {
+    ".read": true,
+    "scores": {
+      ".write": "newData.val() <= 100"  // 只允许写入分数 <= 100 的记录
     }
   }
 }
 ```
 
-然后启用 Firebase Authentication（Google 登录）。
+或者，如果需要认证：
+
+```json
+{
+  "rules": {
+    "scores": {
+      ".read": true,
+      ".write": "auth != null"
+    }
+  }
+}
+```
+
+然后启用 Firebase Authentication。
 
 ## ⚠️ 重要提示
 
 1. **免费额度**：
-   - Firestore Spark 计划：每月 50,000 次读取，20,000 次写入
-   - 存储：1GB
+   - Realtime Database Spark 计划：每月 100 并发连接，1GB 存储
    - 对于小课程来说完全够用
 
 2. **隐私**：
@@ -138,7 +146,7 @@ service cloud.firestore {
    - 确保学生知道他们的成绩会被公开
 
 3. **备份**：
-   - 建议定期导出 Firestore 数据作为备份
+   - 建议定期导出 Realtime Database 数据作为备份
 
 ## 🆘 常见问题
 
@@ -146,7 +154,7 @@ service cloud.firestore {
 A: 检查以下几点：
 1. API 密钥是否正确复制
 2. 项目 ID 和 Auth Domain 是否匹配
-3. Firestore 数据库是否已创建
+3. Realtime Database 是否已创建
 
 ### Q: 排行榜不更新？
 A: 

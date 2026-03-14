@@ -1206,15 +1206,17 @@
                 <div class="leaderboard-panel" id="leaderboardPanel">
                     <h3>
                         <span>🏆 成绩排行榜</span>
-                        <div>
-                            <button class="clear-scores-btn" onclick="clearLeaderboard()">清空本地</button>
-                            <button class="clear-scores-btn" onclick="openFirebaseConfig()" title="配置Firebase云端数据库">⚙️ 配置云端</button>
-                        </div>
+                        <button class="clear-scores-btn" onclick="clearLeaderboard()">清空本地</button>
                     </h3>
                     <div class="leaderboard-list" id="leaderboardList">
                         <div class="no-scores">暂无成绩记录</div>
                     </div>
                 </div>
+
+                <!-- Firebase 配置按钮 -->
+                <button class="reset-btn" onclick="openFirebaseConfig()" style="background: linear-gradient(145deg, #ff9800, #f57c00); box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);">
+                    ⚙️ 配置云端存储（Firebase）
+                </button>
 
                 <div class="how-to-play">
                     <h3>📖 游戏说明</h3>

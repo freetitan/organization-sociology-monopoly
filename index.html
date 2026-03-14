@@ -7,7 +7,7 @@
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script>
         // 检查 Firebase SDK 是否加载成功
         window.firebaseLoaded = typeof firebase !== 'undefined' && firebase.app;
@@ -1074,7 +1074,7 @@
     <!-- Firebase 配置界面 -->
     <div class="firebase-config-overlay hidden" id="firebaseConfigOverlay">
         <div class="firebase-config-card">
-            <h2>🔥 配置 Firebase 数据库</h2>
+            <h2>🔥 配置 Firebase Realtime Database</h2>
             <p class="config-subtitle">
                 为了在 GitHub Pages 上存储所有学生的成绩，需要配置 Firebase。<br>
                 <a href="https://console.firebase.google.com/" target="_blank" class="config-link">点击这里创建 Firebase 项目</a>
@@ -1082,7 +1082,7 @@
 
             <div class="config-step">
                 <h4>📋 配置步骤</h4>
-                <p>1. 创建 Firebase 项目和 Firestore 数据库</p>
+                <p>1. 创建 Firebase 项目和 Realtime Database</p>
                 <p>2. 在项目设置中找到"您的应用"</p>
                 <p>3. 选择"Web"应用，复制配置信息到下方</p>
             </div>
@@ -1222,7 +1222,7 @@
 
                 <!-- Firebase 配置按钮 -->
                 <button class="reset-btn" onclick="openFirebaseConfig()" style="background: linear-gradient(145deg, #ff9800, #f57c00); box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);">
-                    ⚙️ 配置云端存储（Firebase）
+                    ⚙️ 配置 Realtime Database
                 </button>
 
                 <div class="how-to-play">
@@ -1286,7 +1286,7 @@
                         firebase.initializeApp(config);
                     }
                     
-                    db = firebase.firestore();
+                    db = firebase.database();
                     useFirebase = true;
                     console.log('Firebase 初始化成功');
                     return true;
@@ -1379,19 +1379,22 @@
 
                 // 初始化 Firebase
                 firebase.initializeApp(config);
-                db = firebase.firestore();
+                db = firebase.database();
 
                 // 测试连接
                 status.style.display = 'block';
                 status.className = 'firebase-status info';
                 status.textContent = '⏳ 正在测试 Firebase 连接...';
 
-                await db.collection('test').add({ test: true, timestamp: new Date() });
-                const docRef = await db.collection('test').where('test', '==', true).limit(1).get();
-                
-                // 清理测试数据
-                if (!docRef.empty) {
-                    await docRef.docs[0].ref.delete();
+                // 写入测试数据
+                const testRef = db.ref('test/connection');
+                await testRef.set({ test: true, timestamp: new Date().toISOString() });
+
+                // 读取测试数据
+                const snapshot = await testRef.once('value');
+                if (snapshot.exists()) {
+                    // 清理测试数据
+                    await testRef.remove();
                 }
 
                 // 保存配置
@@ -1415,8 +1418,8 @@
                 status.className = 'firebase-status error';
                 
                 let errorMsg = '❌ Firebase 配置失败：';
-                if (error.message.includes('permission')) {
-                    errorMsg += '权限不足，请检查 Firestore 规则设置';
+                if (error.message.includes('permission') || error.message.includes('PERMISSION_DENIED')) {
+                    errorMsg += '权限不足，请检查 Realtime Database 规则设置';
                 } else if (error.message.includes('network') || error.message.includes('network error')) {
                     errorMsg += '网络连接失败，请检查网络';
                 } else if (error.message.includes('invalid-api-key')) {
@@ -1537,21 +1540,33 @@
             // 保存到 Firebase
             if (useFirebase && db) {
                 try {
-                    // 检查是否已存在该学号的记录
-                    const existingQuery = await db.collection('scores')
-                        .where('studentId', '==', currentPlayer.studentId)
-                        .get();
+                    // Realtime Database: 查询已存在的学号记录
+                    const scoresRef = db.ref('scores');
+                    const snapshot = await scoresRef
+                        .orderByChild('studentId')
+                        .equalTo(currentPlayer.studentId)
+                        .once('value');
 
-                    if (!existingQuery.empty) {
+                    if (snapshot.exists()) {
                         // 更新现有记录（只保留最高分）
-                        const existingDoc = existingQuery.docs[0];
-                        const existingScore = existingDoc.data().score;
+                        let existingKey = null;
+                        let existingScore = -1;
+
+                        snapshot.forEach((childSnapshot) => {
+                            const existingData = childSnapshot.val();
+                            if (existingData.score > existingScore) {
+                                existingScore = existingData.score;
+                                existingKey = childSnapshot.key;
+                            }
+                        });
+
+                        // 如果新分数更高，更新记录
                         if (scoreRecord.score > existingScore) {
-                            await existingDoc.ref.update(scoreRecord);
+                            await scoresRef.child(existingKey).update(scoreRecord);
                         }
                     } else {
                         // 添加新记录
-                        await db.collection('scores').add(scoreRecord);
+                        await scoresRef.push(scoreRecord);
                     }
                     console.log('成绩已保存到 Firebase');
                 } catch (error) {
@@ -1602,14 +1617,14 @@
             if (useFirebase && db) {
                 try {
                     // 从 Firebase 获取排行榜
-                    const snapshot = await db.collection('scores')
-                        .orderBy('score', 'desc')
-                        .orderBy('timestamp', 'desc')
-                        .limit(20)
-                        .get();
+                    const snapshot = await db.ref('scores')
+                        .orderByChild('score')
+                        .limitToLast(20)
+                        .once('value');
 
-                    if (!snapshot.empty) {
-                        leaderboard = snapshot.docs.map(doc => doc.data());
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        leaderboard = Object.values(data);
                     } else {
                         // 如果 Firebase 为空，显示本地数据
                         leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');

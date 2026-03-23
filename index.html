@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>组织社会学大富翁</title>
+    <title>组织行为学大富翁</title>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -83,14 +83,15 @@
 
         .game-container {
             display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 30px;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
             background: rgba(255,255,255,0.95);
             border-radius: 25px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3),
                         inset 0 -3px 0 rgba(0,0,0,0.1);
             border: 4px solid #fff;
+            position: relative;
         }
 
         .board-section {
@@ -103,12 +104,12 @@
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             grid-template-rows: repeat(10, 1fr);
-            gap: 8px;
+            gap: 6px;
             width: 100%;
-            max-width: 650px;
+            max-width: 750px;
             aspect-ratio: 1;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 15px;
+            padding: 12px;
             border-radius: 20px;
             border: 5px solid #4a90a4;
             box-shadow: inset 0 4px 8px rgba(0,0,0,0.1),
@@ -392,9 +393,26 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-radius: 20px;
-            padding: 25px;
+            padding: 20px;
             border: none;
             box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .bottom-panel {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .bottom-panel .player-info-bar {
+            flex: 0 0 auto;
+            min-width: 200px;
+        }
+
+        .bottom-panel .info-panel {
+            flex: 1;
         }
 
         .concept-card h3 {
@@ -544,6 +562,10 @@
 
             .cell-icon {
                 font-size: 1.4em;
+            }
+
+            .bottom-panel {
+                flex-direction: column;
             }
         }
 
@@ -900,7 +922,7 @@
     <!-- 登录界面 -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-card">
-            <h2>🎮 组织社会学大富翁 🏢</h2>
+            <h2>🎮 组织行为学大富翁 🏢</h2>
             <p class="login-subtitle">请输入您的信息开始学习之旅</p>
             <form class="login-form" id="loginForm" onsubmit="return handleLogin(event)">
                 <div class="form-group">
@@ -922,14 +944,54 @@
 
     <div class="container">
         <header>
-            <h1>🎮 组织社会学大富翁 🏢</h1>
-            <div class="subtitle">🌟 探索组织社会学的重要概念与理论 🌟</div>
+            <h1>🎮 组织行为学大富翁 🏢</h1>
+            <div class="subtitle">🌟 探索组织行为学的重要概念与理论 🌟</div>
         </header>
 
         <div class="game-container">
             <div class="board-section">
                 <div class="game-board" id="gameBoard">
                     <!-- 棋盘格子将由JavaScript生成 -->
+                </div>
+
+                <!-- 玩家信息和游戏状态 - 移到地图下方 -->
+                <div class="bottom-panel">
+                    <div class="player-info-bar" id="playerInfoBar">
+                        <div class="player-details">
+                            <div class="player-avatar">👤</div>
+                            <div class="player-name-id">
+                                <div class="name" id="displayName">-</div>
+                                <div class="student-id" id="displayStudentId">学号: -</div>
+                            </div>
+                        </div>
+                        <button class="logout-btn" onclick="logout()">退出登录</button>
+                    </div>
+
+                    <div class="info-panel">
+                        <h3>📊 游戏状态</h3>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <div class="stat-icon">📍</div>
+                                <div class="stat-value" id="position">0</div>
+                                <div class="stat-label">当前位置</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">⭐</div>
+                                <div class="stat-value" id="score">0</div>
+                                <div class="stat-label">知识积分</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">✅</div>
+                                <div class="stat-value" id="correctAnswers">0</div>
+                                <div class="stat-label">正确答题</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">📝</div>
+                                <div class="stat-value" id="totalQuestions">0</div>
+                                <div class="stat-label">总答题数</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="controls">
@@ -943,51 +1005,7 @@
             </div>
 
             <div class="sidebar">
-                <!-- 玩家信息栏 -->
-                <div class="player-info-bar" id="playerInfoBar">
-                    <div class="player-details">
-                        <div class="player-avatar">👤</div>
-                        <div class="player-name-id">
-                            <div class="name" id="displayName">-</div>
-                            <div class="student-id" id="displayStudentId">学号: -</div>
-                        </div>
-                    </div>
-                    <button class="logout-btn" onclick="logout()">退出登录</button>
-                </div>
-
-                <div class="info-panel">
-                    <h3>📊 游戏状态</h3>
-                    <div class="stats">
-                        <div class="stat-item">
-                            <div class="stat-icon">📍</div>
-                            <div class="stat-value" id="position">0</div>
-                            <div class="stat-label">当前位置</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">⭐</div>
-                            <div class="stat-value" id="score">0</div>
-                            <div class="stat-label">知识积分</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">✅</div>
-                            <div class="stat-value" id="correctAnswers">0</div>
-                            <div class="stat-label">正确答题</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">📝</div>
-                            <div class="stat-value" id="totalQuestions">0</div>
-                            <div class="stat-label">总答题数</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="message-box">
-                    <h3>💬 游戏消息</h3>
-                    <div class="message-content" id="messageBox">
-                        🎉 欢迎来到组织社会学大富翁！<br><br>🎲 点击"掷骰子"开始游戏，探索组织社会学的重要概念和理论！
-                    </div>
-                </div>
-
+                <!-- 问题卡片 - 放在右侧栏顶部 -->
                 <div class="concept-card hidden" id="conceptCard">
                     <div class="concept-type" id="conceptType">理论</div>
                     <h3 id="conceptTitle">理论名称</h3>
@@ -996,6 +1014,14 @@
                         <!-- 选项将由JavaScript生成 -->
                     </div>
                 </div>
+
+                <div class="message-box">
+                    <h3>💬 游戏消息</h3>
+                    <div class="message-content" id="messageBox">
+                        🎉 欢迎来到组织行为学大富翁！<br><br>🎲 点击"掷骰子"开始游戏，探索组织行为学的重要概念和理论！<br><br>⚠️ 每人只能玩一次，请认真作答！
+                    </div>
+                </div>
+
 
                 <!-- 排行榜 -->
                 <div class="leaderboard-panel" id="leaderboardPanel">
@@ -1113,6 +1139,13 @@
                 return false;
             }
             document.getElementById('playerNameError').style.display = 'none';
+
+            // 检查该学号是否已经玩过游戏
+            const playedStudents = JSON.parse(localStorage.getItem('playedStudents') || '[]');
+            if (playedStudents.includes(studentId)) {
+                alert('您已经玩过本游戏，每人限玩一次！');
+                return false;
+            }
 
             // 保存玩家信息
             currentPlayer = {
@@ -1232,6 +1265,13 @@
 
             // 更新显示
             updateLeaderboard();
+
+            // 标记该学号已玩过游戏
+            const playedStudents = JSON.parse(localStorage.getItem('playedStudents') || '[]');
+            if (!playedStudents.includes(currentPlayer.studentId)) {
+                playedStudents.push(currentPlayer.studentId);
+                localStorage.setItem('playedStudents', JSON.stringify(playedStudents));
+            }
         }
 
         // 本地存储成绩
@@ -1354,7 +1394,7 @@
             const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `组织社会学成绩_${new Date().toLocaleDateString('zh-CN')}.csv`;
+            link.download = `组织行为学成绩_${new Date().toLocaleDateString('zh-CN')}.csv`;
             link.click();
         }
 
@@ -1598,6 +1638,105 @@
                 ],
                 correct: 3,
                 points: 10
+            },
+            '组织行为': {
+                question: '组织行为学主要研究哪个层面？',
+                options: [
+                    '个体层面',
+                    '群体层面',
+                    '组织层面',
+                    '以上都是'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '工作满意度': {
+                question: '影响工作满意度的因素不包括？',
+                options: [
+                    '工作本身',
+                    '薪酬福利',
+                    '同事关系',
+                    '员工年龄'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '工作动机': {
+                question: '内在动机主要来源于？',
+                options: [
+                    '外部奖励',
+                    '工作本身的兴趣',
+                    '晋升机会',
+                    '薪资增长'
+                ],
+                correct: 1,
+                points: 10
+            },
+            '群体动力': {
+                question: '群体发展的阶段不包括？',
+                options: [
+                    '形成期',
+                    '震荡期',
+                    '成熟期',
+                    '永久期'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '冲突管理': {
+                question: '处理冲突的策略不包括？',
+                options: [
+                    '竞争',
+                    '合作',
+                    '回避',
+                    '放任不管'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '绩效管理': {
+                question: '绩效考核的主要方法不包括？',
+                options: [
+                    '360度反馈',
+                    '关键绩效指标',
+                    '主观印象评价',
+                    '目标管理法'
+                ],
+                correct: 2,
+                points: 10
+            },
+            '员工参与': {
+                question: '员工参与的主要形式不包括？',
+                options: [
+                    '建议制度',
+                    '质量圈',
+                    '员工持股',
+                    '强制加班'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '组织承诺': {
+                question: '组织承诺的三种形式不包括？',
+                options: [
+                    '情感承诺',
+                    '持续承诺',
+                    '规范承诺',
+                    '经济承诺'
+                ],
+                correct: 3,
+                points: 10
+            },
+            '工作压力': {
+                question: '工作压力的主要来源不包括？',
+                options: [
+                    '工作负荷',
+                    '角色冲突',
+                    '人际关系',
+                    '休闲活动'
+                ],
+                correct: 3,
+                points: 10
             }
         };
 
@@ -1766,6 +1905,116 @@
                 ],
                 correct: 3,
                 points: 20
+            },
+            '期望理论': {
+                question: '弗鲁姆期望理论的核心变量不包括？',
+                options: [
+                    '期望',
+                    '工具性',
+                    '效价',
+                    '满意度'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '双因素理论': {
+                question: '赫茨伯格双因素理论中的激励因素不包括？',
+                options: [
+                    '成就感',
+                    '工作本身',
+                    '公司政策',
+                    '责任感'
+                ],
+                correct: 2,
+                points: 20
+            },
+            '公平理论': {
+                question: '亚当斯公平理论中的比较对象不包括？',
+                options: [
+                    '自己过去的投入产出比',
+                    '同事的投入产出比',
+                    '行业平均投入产出比',
+                    '理想的投入产出比'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '目标设置理论': {
+                question: '洛克目标设置理论认为有效目标的特征不包括？',
+                options: [
+                    '具体性',
+                    '挑战性',
+                    '反馈性',
+                    '模糊性'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '路径目标理论': {
+                question: '豪斯路径目标理论中的领导行为不包括？',
+                options: [
+                    '指导型领导',
+                    '支持型领导',
+                    '参与型领导',
+                    '放任型领导'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '领导成员交换理论': {
+                question: 'LMX理论将下属分为？',
+                options: [
+                    '圈内人和圈外人',
+                    '高层和基层',
+                    '正式和非正式',
+                    '核心和边缘'
+                ],
+                correct: 0,
+                points: 20
+            },
+            '组织生命周期理论': {
+                question: '组织生命周期的阶段不包括？',
+                options: [
+                    '创业阶段',
+                    '聚合阶段',
+                    '规范化阶段',
+                    '静止阶段'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '组织文化理论': {
+                question: '沙因组织文化理论中文化的层次不包括？',
+                options: [
+                    '人工制品',
+                    '价值观',
+                    '基本假设',
+                    '制度规范'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '学习型组织': {
+                question: '圣吉学习型组织的五项修炼不包括？',
+                options: [
+                    '系统思考',
+                    '自我超越',
+                    '心智模式',
+                    '集中控制'
+                ],
+                correct: 3,
+                points: 20
+            },
+            '变革型领导': {
+                question: '变革型领导的特征不包括？',
+                options: [
+                    '理想化影响',
+                    '鼓舞性激励',
+                    '智力激发',
+                    '交易性奖励'
+                ],
+                correct: 3,
+                points: 20
             }
         };
 
@@ -1920,7 +2169,7 @@
                     handleChance();
                     break;
                 case 'start':
-                    messageBox.innerHTML = `🏁 你回到了起点！<br><br>🌟 继续探索组织社会学的知识吧！`;
+                    messageBox.innerHTML = `🏁 你回到了起点！<br><br>🌟 继续探索组织行为学的知识吧！`;
                     resetGameState();
                     break;
             }

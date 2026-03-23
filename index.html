@@ -1006,7 +1006,7 @@
                 <div class="leaderboard-panel" id="leaderboardPanel">
                     <h3>
                         <span>🏆 成绩排行榜</span>
-                        <button class="clear-scores-btn" onclick="clearLeaderboard()">清空本地</button>
+
                     </h3>
                     <div class="leaderboard-list" id="leaderboardList">
                         <div class="no-scores">暂无成绩记录</div>
@@ -1025,10 +1025,7 @@
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <!-- 自动保存：每答对题目后自动保存 -->
-                    <button class="roll-btn" id="rollBtn" onclick="rollDice()">
-                        🎲 掷骰子
-                    </button>
+                    <!-- 进度自动保存 -->
                 </div>
             </div>
         </div>
@@ -1366,13 +1363,7 @@
             return `${mins}分${secs}秒`;
         }
 
-        // 清空排行榜
-        function clearLeaderboard() {
-            if (confirm('确定要清空所有成绩记录吗？此操作不可恢复！')) {
-                localStorage.removeItem('leaderboard');
-                updateLeaderboard();
-            }
-        }
+
 
         // 导出成绩（CSV格式）
         function exportScores() {

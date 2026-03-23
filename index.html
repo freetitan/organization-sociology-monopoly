@@ -1144,44 +1144,6 @@
 
             return false;
         }
-            document.getElementById('studentIdError').style.display = 'none';
-
-            if (!name || name.length < 2) {
-                document.getElementById('playerNameError').style.display = 'block';
-                return false;
-            }
-            document.getElementById('playerNameError').style.display = 'none';
-
-            // 检查该学号是否已经玩过游戏
-            const playedStudents = JSON.parse(localStorage.getItem('playedStudents') || '[]');
-            if (playedStudents.includes(studentId)) {
-                alert('您已经玩过本游戏，每人限玩一次！');
-                return false;
-            }
-
-            // 保存玩家信息
-            currentPlayer = {
-                studentId: studentId,
-                name: name
-            };
-
-            // 保存到 localStorage
-            localStorage.setItem('currentPlayer', JSON.stringify(currentPlayer));
-
-            // 更新显示
-            document.getElementById('displayName').textContent = name;
-            document.getElementById('displayStudentId').textContent = `学号: ${studentId}`;
-
-            // 隐藏登录界面
-            document.getElementById('loginOverlay').classList.add('hidden');
-
-            // 初始化游戏
-            gameState.startTime = new Date().toISOString();
-            initGameBoard();
-            updateLeaderboard();
-
-            return false;
-        }
 
         // 检查是否已登录
         function checkLogin() {
@@ -1191,12 +1153,31 @@
             const savedPlayer = localStorage.getItem('currentPlayer');
             if (savedPlayer) {
                 currentPlayer = JSON.parse(savedPlayer);
-                document.getElementById('displayName').textContent = currentPlayer.name;
-                document.getElementById('displayStudentId').textContent = `学号: ${currentPlayer.studentId}`;
-                document.getElementById('loginOverlay').classList.add('hidden');
-                gameState.startTime = new Date().toISOString();
-                initGameBoard();
-                updateLeaderboard();
+                
+                // 检查该学号是否已经玩过游戏（已完成游戏的玩家）
+                const playedStudents = JSON.parse(localStorage.getItem('playedStudents') || '[]');
+                if (playedStudents.includes(currentPlayer.studentId)) {
+                    // 已完成游戏的玩家，显示成绩但不能再玩
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    document.getElementById('displayName').textContent = currentPlayer.name;
+                    document.getElementById('displayStudentId').textContent = `学号: ${currentPlayer.studentId}`;
+                    
+                    // 显示已完成游戏的消息
+                    document.getElementById('rollBtn').disabled = true;
+                    document.getElementById('messageBox').innerHTML = '您已经完成过本游戏！每人限玩一次。您的成绩已保存。';
+
+                    gameState.startTime = new Date().toISOString();
+                    initGameBoard();
+                    updateLeaderboard();
+                } else {
+                    // 未完成游戏的玩家，可以继续游戏
+                    document.getElementById('displayName').textContent = currentPlayer.name;
+                    document.getElementById('displayStudentId').textContent = `学号: ${currentPlayer.studentId}`;
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    gameState.startTime = new Date().toISOString();
+                    initGameBoard();
+                    updateLeaderboard();
+                }
             }
         }
 

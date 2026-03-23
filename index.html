@@ -27,89 +27,92 @@
 
         body {
             font-family: 'Nunito', 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
             min-height: 100vh;
-            padding: 15px;
+            padding: 20px;
             position: relative;
             overflow-x: hidden;
         }
 
         body::before {
-            content: '';
+            content: '🏢 💼 📊 🎯 💡 🚀';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%);
+            font-size: 3rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.05;
             z-index: -1;
+            letter-spacing: 30px;
+            white-space: nowrap;
         }
 
         .container {
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
             color: white;
-            margin-bottom: 15px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
             position: relative;
         }
 
         h1 {
-            font-size: 2.2em;
-            margin-bottom: 5px;
-            background: linear-gradient(90deg, #fff, #a8edea, #fed6e3, #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shine 3s linear infinite;
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            animation: bounce 2s ease-in-out infinite;
         }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .subtitle {
-            font-size: 1em;
-            opacity: 0.8;
-            color: #a8edea;
+            font-size: 1.3em;
+            opacity: 0.95;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
         }
 
         .game-container {
             display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-            gap: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3),
+                        inset 0 -3px 0 rgba(0,0,0,0.1);
+            border: 4px solid #fff;
         }
 
         .board-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
         }
 
         .game-board {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             grid-template-rows: repeat(10, 1fr);
-            gap: 4px;
+            gap: 8px;
             width: 100%;
-            max-width: 520px;
+            max-width: 650px;
             aspect-ratio: 1;
-            background: linear-gradient(135deg, #e8f4f8 0%, #d4e7ed 100%);
-            padding: 10px;
-            border-radius: 15px;
-            border: 3px solid #5c9ead;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 15px;
+            border-radius: 20px;
+            border: 5px solid #4a90a4;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1),
+                        0 8px 16px rgba(0,0,0,0.2);
         }
 
         .cell {
@@ -220,35 +223,35 @@
         }
 
         .controls {
-            margin-top: 10px;
+            margin-top: 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
         }
 
         .dice-section {
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: linear-gradient(145deg, #fff, #f8fafc);
-            padding: 12px 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            gap: 20px;
+            background: linear-gradient(145deg, #fff, #f0f0f0);
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
 
         .dice {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(145deg, #ffffff, #f1f5f9);
-            border: 3px solid #334155;
-            border-radius: 12px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border: 4px solid #333;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2em;
+            font-size: 2.5em;
             font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
             transition: transform 0.1s;
         }
 
@@ -263,34 +266,34 @@
         }
 
         .roll-btn {
-            padding: 12px 28px;
-            font-size: 1.1em;
-            background: linear-gradient(145deg, #22c55e, #16a34a);
+            padding: 16px 40px;
+            font-size: 1.3em;
+            background: linear-gradient(145deg, #66bb6a, #4caf50);
             color: white;
             border: none;
-            border-radius: 25px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-            box-shadow: 0 3px 10px rgba(34, 197, 94, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: bold;
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.3);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .roll-btn:hover {
-            background: linear-gradient(145deg, #4ade80, #22c55e);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4);
+            background: linear-gradient(145deg, #81c784, #66bb6a);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4);
         }
 
         .roll-btn:active {
             transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
         }
 
         .roll-btn:disabled {
-            background: linear-gradient(145deg, #94a3b8, #64748b);
+            background: linear-gradient(145deg, #bdbdbd, #9e9e9e);
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -299,119 +302,99 @@
         .sidebar {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 20px;
         }
 
         .info-panel {
-            background: linear-gradient(145deg, #f8fafc, #f1f5f9);
-            border-radius: 12px;
-            padding: 12px;
-            border-left: 4px solid #6366f1;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: linear-gradient(145deg, #f5f7fa, #e8eaf6);
+            border-radius: 20px;
+            padding: 20px;
+            border-left: 6px solid #667eea;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .info-panel h3 {
-            color: #6366f1;
-            margin-bottom: 10px;
-            font-size: 1em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-top: 8px;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
         }
 
         .stat-item {
-            background: white;
-            padding: 8px 4px;
-            border-radius: 10px;
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            padding: 12px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
 
         .stat-icon {
-            font-size: 1.2em;
-            margin-bottom: 2px;
+            font-size: 1.5em;
+            margin-bottom: 5px;
         }
 
         .stat-value {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #6366f1;
+            font-size: 2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .stat-label {
-            font-size: 0.7em;
-            color: #64748b;
-            margin-top: 2px;
-            font-weight: 500;
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+            font-weight: 600;
         }
 
         .message-box {
-            background: linear-gradient(145deg, #fefce8, #fef9c3);
-            border-left: 4px solid #eab308;
-            border-radius: 12px;
-            padding: 12px;
-            min-height: 80px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: linear-gradient(145deg, #fff9c4, #fff59d);
+            border-left: 6px solid #ff9800;
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 140px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .message-box h3 {
-            color: #a16207;
-            margin-bottom: 8px;
-            font-size: 1em;
+            color: #e65100;
+            margin-bottom: 12px;
+            font-size: 1.2em;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .message-content {
-            margin-top: 6px;
-            line-height: 1.6;
-            color: #422006;
-            font-size: 0.9em;
+            margin-top: 12px;
+            line-height: 1.8;
+            color: #424242;
         }
 
         .concept-card {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 20px;
+            padding: 25px;
             border: none;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .bottom-panel {
-            display: flex;
-            gap: 12px;
-            width: 100%;
-            max-width: 520px;
-        }
-
-        .bottom-panel .player-info-bar {
-            flex: 0 0 auto;
-            min-width: 180px;
-        }
-
-        .bottom-panel .info-panel {
-            flex: 1;
-        }
-            width: 100%;
-            max-width: 750px;
-        }
-
-        .bottom-panel .player-info-bar {
-            flex: 0 0 auto;
-            min-width: 200px;
-        }
-
-        .bottom-panel .info-panel {
-            flex: 1;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
         }
 
         .concept-card h3 {
@@ -488,54 +471,53 @@
         }
 
         .reset-btn {
-            padding: 10px 20px;
-            background: linear-gradient(145deg, #f87171, #ef4444);
+            padding: 14px 30px;
+            background: linear-gradient(145deg, #ef5350, #f44336);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 1em;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
         }
 
         .reset-btn:hover {
-            background: linear-gradient(145deg, #dc2626, #ef4444);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            background: linear-gradient(145deg, #e53935, #ef5350);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
         }
 
         .how-to-play {
-            background: linear-gradient(145deg, #eff6ff, #dbeafe);
-            border-radius: 12px;
-            padding: 12px;
-            border-left: 4px solid #3b82f6;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: linear-gradient(145deg, #e3f2fd, #bbdefb);
+            border-radius: 20px;
+            padding: 20px;
+            border-left: 6px solid #2196f3;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .how-to-play h3 {
-            color: #1d4ed8;
-            margin-bottom: 8px;
-            font-size: 1em;
+            color: #1565c0;
+            margin-bottom: 12px;
+            font-size: 1.2em;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .how-to-play ul {
-            padding-left: 20px;
-            line-height: 1.8;
-            font-size: 0.85em;
+            padding-left: 25px;
+            line-height: 2;
         }
 
         .how-to-play li {
-            margin-bottom: 4px;
-            color: #334155;
+            margin-bottom: 8px;
+            color: #424242;
         }
 
         .hidden {
@@ -549,52 +531,26 @@
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 2.5em;
             }
 
             .game-board {
-                max-width: 450px;
+                max-width: 100%;
             }
 
-            .bottom-panel {
-                flex-direction: column;
+            .cell {
+                font-size: 0.6em;
+            }
+
+            .cell-icon {
+                font-size: 1.4em;
             }
         }
 
         @media (max-width: 600px) {
             h1 {
-                font-size: 1.5em;
+                font-size: 2em;
             }
-
-            .subtitle {
-                font-size: 0.85em;
-            }
-
-            .game-board {
-                gap: 3px;
-                padding: 6px;
-            }
-
-            .cell {
-                font-size: 0.5em;
-                padding: 2px;
-            }
-
-            .cell-icon {
-                font-size: 1em;
-            }
-
-            .dice {
-                width: 50px;
-                height: 50px;
-                font-size: 1.8em;
-            }
-
-            .roll-btn {
-                padding: 10px 20px;
-                font-size: 1em;
-            }
-        }
 
             .subtitle {
                 font-size: 1em;
@@ -621,8 +577,8 @@
             }
 
             .roll-btn {
-                padding: 10px 20px;
-                font-size: 1em;
+                padding: 12px 25px;
+                font-size: 1.1em;
             }
         }
 
@@ -653,39 +609,51 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 2000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .login-card {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: 30px;
+            padding: 50px;
             width: 90%;
-            max-width: 420px;
+            max-width: 500px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             text-align: center;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .login-card h2 {
-            font-size: 1.6em;
-            color: #1f2937;
-            margin-bottom: 8px;
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
         }
 
         .login-card .login-subtitle {
-            color: #6b7280;
-            margin-bottom: 25px;
-            font-size: 1em;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
         }
 
         .login-form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
 
         .form-group {
@@ -695,91 +663,92 @@
         .form-group label {
             display: block;
             font-weight: 600;
-            color: #374151;
-            margin-bottom: 6px;
-            font-size: 0.9em;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1em;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: all 0.2s;
+            padding: 15px 20px;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1.1em;
+            transition: all 0.3s;
             font-family: inherit;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
         }
 
         .form-group input::placeholder {
-            color: #9ca3af;
+            color: #aaa;
         }
 
         .login-btn {
-            padding: 14px 32px;
-            font-size: 1.1em;
-            background: linear-gradient(145deg, #6366f1, #8b5cf6);
+            padding: 18px 40px;
+            font-size: 1.3em;
+            background: linear-gradient(145deg, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 600;
-            margin-top: 8px;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s;
+            font-weight: bold;
+            margin-top: 10px;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
 
         .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
         }
 
         .login-btn:disabled {
-            background: #d1d5db;
+            background: #ccc;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
         .error-msg {
-            color: #ef4444;
-            font-size: 0.85em;
-            margin-top: 4px;
+            color: #f44336;
+            font-size: 0.9em;
+            margin-top: 5px;
             display: none;
         }
 
         /* 玩家信息栏 */
         .player-info-bar {
-            background: linear-gradient(145deg, #6366f1, #8b5cf6);
+            background: linear-gradient(145deg, #667eea, #764ba2);
             color: white;
-            padding: 10px 15px;
-            border-radius: 10px;
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .player-details {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .player-avatar {
-            width: 36px;
-            height: 36px;
+            width: 50px;
+            height: 50px;
             background: rgba(255,255,255,0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3em;
+            font-size: 1.8em;
         }
 
         .player-name-id {
@@ -787,7 +756,7 @@
         }
 
         .player-name-id .name {
-            font-size: 1em;
+            font-size: 1.2em;
             font-weight: 700;
         }
 
@@ -814,17 +783,17 @@
 
         /* 排行榜样式 */
         .leaderboard-panel {
-            background: linear-gradient(145deg, #faf5ff, #f3e8ff);
-            border-radius: 12px;
-            padding: 12px;
-            border-left: 4px solid #a855f7;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: linear-gradient(145deg, #f3e5f5, #e1bee7);
+            border-radius: 20px;
+            padding: 20px;
+            border-left: 6px solid #9c27b0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .leaderboard-panel h3 {
-            color: #7c3aed;
-            margin-bottom: 10px;
-            font-size: 1em;
+            color: #7b1fa2;
+            margin-bottom: 15px;
+            font-size: 1.2em;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -832,61 +801,61 @@
         }
 
         .clear-scores-btn {
-            padding: 4px 10px;
-            background: rgba(168, 85, 247, 0.1);
-            color: #7c3aed;
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            border-radius: 8px;
+            padding: 5px 12px;
+            background: rgba(156, 39, 176, 0.1);
+            color: #7b1fa2;
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 0.75em;
-            transition: all 0.2s;
+            font-size: 0.8em;
+            transition: all 0.3s;
         }
 
         .clear-scores-btn:hover {
-            background: rgba(168, 85, 247, 0.2);
+            background: rgba(156, 39, 176, 0.2);
         }
 
         .leaderboard-list {
-            max-height: 150px;
+            max-height: 200px;
             overflow-y: auto;
         }
 
         .leaderboard-item {
             display: flex;
             align-items: center;
-            padding: 8px 10px;
+            padding: 10px 12px;
             background: white;
-            border-radius: 8px;
-            margin-bottom: 6px;
+            border-radius: 10px;
+            margin-bottom: 8px;
             transition: transform 0.2s;
         }
 
         .leaderboard-item:hover {
-            transform: translateX(3px);
+            transform: translateX(5px);
         }
 
         .leaderboard-item.current-player {
-            background: linear-gradient(145deg, #ede9fe, #ddd6fe);
-            border-left: 3px solid #8b5cf6;
+            background: linear-gradient(145deg, #e3f2fd, #bbdefb);
+            border-left: 3px solid #2196f3;
         }
 
         .rank {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(145deg, #a855f7, #7c3aed);
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(145deg, #9c27b0, #7b1fa2);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.8em;
-            margin-right: 10px;
+            font-size: 0.9em;
+            margin-right: 12px;
         }
 
-        .rank.gold { background: linear-gradient(145deg, #fbbf24, #f59e0b); }
-        .rank.silver { background: linear-gradient(145deg, #9ca3af, #6b7280); }
-        .rank.bronze { background: linear-gradient(145deg, #d97706, #b45309); }
+        .rank.gold { background: linear-gradient(145deg, #ffd700, #ffb300); }
+        .rank.silver { background: linear-gradient(145deg, #c0c0c0, #9e9e9e); }
+        .rank.bronze { background: linear-gradient(145deg, #cd7f32, #a0522d); }
 
         .leaderboard-info {
             flex: 1;
@@ -894,33 +863,32 @@
 
         .leaderboard-name {
             font-weight: 600;
-            color: #1f2937;
-            font-size: 0.85em;
+            color: #333;
+            font-size: 0.95em;
         }
 
         .leaderboard-id {
-            font-size: 0.75em;
-            color: #6b7280;
+            font-size: 0.8em;
+            color: #666;
         }
 
         .leaderboard-score {
             font-weight: 700;
-            color: #7c3aed;
-            font-size: 1em;
+            color: #9c27b0;
+            font-size: 1.1em;
         }
 
         .leaderboard-date {
-            font-size: 0.7em;
-            color: #9ca3af;
+            font-size: 0.75em;
+            color: #999;
             margin-top: 2px;
         }
 
         .no-scores {
             text-align: center;
-            color: #9ca3af;
-            padding: 15px;
+            color: #999;
+            padding: 20px;
             font-style: italic;
-            font-size: 0.9em;
         }
 
         .hidden {
@@ -964,46 +932,6 @@
                     <!-- 棋盘格子将由JavaScript生成 -->
                 </div>
 
-                <!-- 玩家信息和游戏状态 - 移到地图下方 -->
-                <div class="bottom-panel">
-                    <div class="player-info-bar" id="playerInfoBar">
-                        <div class="player-details">
-                            <div class="player-avatar">👤</div>
-                            <div class="player-name-id">
-                                <div class="name" id="displayName">-</div>
-                                <div class="student-id" id="displayStudentId">学号: -</div>
-                            </div>
-                        </div>
-                        <button class="logout-btn" onclick="logout()">退出登录</button>
-                    </div>
-
-                    <div class="info-panel">
-                        <h3>📊 游戏状态</h3>
-                        <div class="stats">
-                            <div class="stat-item">
-                                <div class="stat-icon">📍</div>
-                                <div class="stat-value" id="position">0</div>
-                                <div class="stat-label">当前位置</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-icon">⭐</div>
-                                <div class="stat-value" id="score">0</div>
-                                <div class="stat-label">知识积分</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-icon">✅</div>
-                                <div class="stat-value" id="correctAnswers">0</div>
-                                <div class="stat-label">正确答题</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-icon">📝</div>
-                                <div class="stat-value" id="totalQuestions">0</div>
-                                <div class="stat-label">总答题数</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="controls">
                     <div class="dice-section">
                         <div class="dice" id="dice">⚀</div>
@@ -1015,13 +943,41 @@
             </div>
 
             <div class="sidebar">
-                <!-- 问题卡片 - 放在右侧栏顶部 -->
-                <div class="concept-card hidden" id="conceptCard">
-                    <div class="concept-type" id="conceptType">理论</div>
-                    <h3 id="conceptTitle">理论名称</h3>
-                    <div class="question" id="conceptQuestion">问题描述</div>
-                    <div class="options" id="conceptOptions">
-                        <!-- 选项将由JavaScript生成 -->
+                <!-- 玩家信息栏 -->
+                <div class="player-info-bar" id="playerInfoBar">
+                    <div class="player-details">
+                        <div class="player-avatar">👤</div>
+                        <div class="player-name-id">
+                            <div class="name" id="displayName">-</div>
+                            <div class="student-id" id="displayStudentId">学号: -</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">退出登录</button>
+                </div>
+
+                <div class="info-panel">
+                    <h3>📊 游戏状态</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-icon">📍</div>
+                            <div class="stat-value" id="position">0</div>
+                            <div class="stat-label">当前位置</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-value" id="score">0</div>
+                            <div class="stat-label">知识积分</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-value" id="correctAnswers">0</div>
+                            <div class="stat-label">正确答题</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-value" id="totalQuestions">0</div>
+                            <div class="stat-label">总答题数</div>
+                        </div>
                     </div>
                 </div>
 
@@ -1032,6 +988,14 @@
                     </div>
                 </div>
 
+                <div class="concept-card hidden" id="conceptCard">
+                    <div class="concept-type" id="conceptType">理论</div>
+                    <h3 id="conceptTitle">理论名称</h3>
+                    <div class="question" id="conceptQuestion">问题描述</div>
+                    <div class="options" id="conceptOptions">
+                        <!-- 选项将由JavaScript生成 -->
+                    </div>
+                </div>
 
                 <!-- 排行榜 -->
                 <div class="leaderboard-panel" id="leaderboardPanel">
@@ -1142,6 +1106,44 @@
                 document.getElementById('studentIdError').style.display = 'block';
                 return false;
             }
+            document.getElementById('studentIdError').style.display = 'none';
+
+            if (!name || name.length < 2) {
+                document.getElementById('playerNameError').style.display = 'block';
+                return false;
+            }
+            document.getElementById('playerNameError').style.display = 'none';
+
+            // 检查该学号是否已经玩过游戏
+            const playedStudents = JSON.parse(localStorage.getItem('playedStudents') || '[]');
+            if (playedStudents.includes(studentId)) {
+                alert('您已经玩过本游戏，每人限玩一次！');
+                return false;
+            }
+
+            // 保存玩家信息
+            currentPlayer = {
+                studentId: studentId,
+                name: name
+            };
+
+            // 保存到 localStorage
+            localStorage.setItem('currentPlayer', JSON.stringify(currentPlayer));
+
+            // 更新显示
+            document.getElementById('displayName').textContent = name;
+            document.getElementById('displayStudentId').textContent = `学号: ${studentId}`;
+
+            // 隐藏登录界面
+            document.getElementById('loginOverlay').classList.add('hidden');
+
+            // 初始化游戏
+            gameState.startTime = new Date().toISOString();
+            initGameBoard();
+            updateLeaderboard();
+
+            return false;
+        }
             document.getElementById('studentIdError').style.display = 'none';
 
             if (!name || name.length < 2) {
@@ -1471,10 +1473,10 @@
             [1, 5], [1, 4], [1, 3], [1, 2], [2, 1]
         ];
 
-        // 组织社会学概念和理论问题库
+        // 组织行为学概念和理论问题库
         const conceptQuestions = {
             '组织': {
-                question: '组织社会学中，"组织"最基本的特征是什么？',
+                question: '组织行为学中，"组织"最基本的特征是什么？',
                 options: [
                     '有明确的目标',
                     '有严格的层级结构',
@@ -1518,7 +1520,7 @@
                 points: 10
             },
             '权力': {
-                question: '在组织社会学中，权力的来源不包括？',
+                question: '在组织行为学中，权力的来源不包括？',
                 options: [
                     '法定权力',
                     '奖赏权力',
@@ -1645,105 +1647,6 @@
                     '业务层战略',
                     '职能层战略',
                     '个人层战略'
-                ],
-                correct: 3,
-                points: 10
-            },
-            '组织行为': {
-                question: '组织行为学主要研究哪个层面？',
-                options: [
-                    '个体层面',
-                    '群体层面',
-                    '组织层面',
-                    '以上都是'
-                ],
-                correct: 3,
-                points: 10
-            },
-            '工作满意度': {
-                question: '影响工作满意度的因素不包括？',
-                options: [
-                    '工作本身',
-                    '薪酬福利',
-                    '同事关系',
-                    '员工年龄'
-                ],
-                correct: 3,
-                points: 10
-            },
-            '工作动机': {
-                question: '内在动机主要来源于？',
-                options: [
-                    '外部奖励',
-                    '工作本身的兴趣',
-                    '晋升机会',
-                    '薪资增长'
-                ],
-                correct: 1,
-                points: 10
-            },
-            '群体动力': {
-                question: '群体发展的阶段不包括？',
-                options: [
-                    '形成期',
-                    '震荡期',
-                    '成熟期',
-                    '永久期'
-                ],
-                correct: 3,
-                points: 10
-            },
-            '冲突管理': {
-                question: '处理冲突的策略不包括？',
-                options: [
-                    '竞争',
-                    '合作',
-                    '回避',
-                    '放任不管'
-                ],
-                correct: 3,
-                points: 10
-            },
-            '绩效管理': {
-                question: '绩效考核的主要方法不包括？',
-                options: [
-                    '360度反馈',
-                    '关键绩效指标',
-                    '主观印象评价',
-                    '目标管理法'
-                ],
-                correct: 2,
-                points: 10
-            },
-            '员工参与': {
-                question: '员工参与的主要形式不包括？',
-                options: [
-                    '建议制度',
-                    '质量圈',
-                    '员工持股',
-                    '强制加班'
-                ],
-                correct: 3,
-                points: 10
-            },
-            '组织承诺': {
-                question: '组织承诺的三种形式不包括？',
-                options: [
-                    '情感承诺',
-                    '持续承诺',
-                    '规范承诺',
-                    '经济承诺'
-                ],
-                correct: 3,
-                points: 10
-            },
-            '工作压力': {
-                question: '工作压力的主要来源不包括？',
-                options: [
-                    '工作负荷',
-                    '角色冲突',
-                    '人际关系',
-                    '休闲活动'
                 ],
                 correct: 3,
                 points: 10
@@ -1912,116 +1815,6 @@
                     '客户',
                     '供应商',
                     '完全无关的人'
-                ],
-                correct: 3,
-                points: 20
-            },
-            '期望理论': {
-                question: '弗鲁姆期望理论的核心变量不包括？',
-                options: [
-                    '期望',
-                    '工具性',
-                    '效价',
-                    '满意度'
-                ],
-                correct: 3,
-                points: 20
-            },
-            '双因素理论': {
-                question: '赫茨伯格双因素理论中的激励因素不包括？',
-                options: [
-                    '成就感',
-                    '工作本身',
-                    '公司政策',
-                    '责任感'
-                ],
-                correct: 2,
-                points: 20
-            },
-            '公平理论': {
-                question: '亚当斯公平理论中的比较对象不包括？',
-                options: [
-                    '自己过去的投入产出比',
-                    '同事的投入产出比',
-                    '行业平均投入产出比',
-                    '理想的投入产出比'
-                ],
-                correct: 3,
-                points: 20
-            },
-            '目标设置理论': {
-                question: '洛克目标设置理论认为有效目标的特征不包括？',
-                options: [
-                    '具体性',
-                    '挑战性',
-                    '反馈性',
-                    '模糊性'
-                ],
-                correct: 3,
-                points: 20
-            },
-            '路径目标理论': {
-                question: '豪斯路径目标理论中的领导行为不包括？',
-                options: [
-                    '指导型领导',
-                    '支持型领导',
-                    '参与型领导',
-                    '放任型领导'
-                ],
-                correct: 3,
-                points: 20
-            },
-            '领导成员交换理论': {
-                question: 'LMX理论将下属分为？',
-                options: [
-                    '圈内人和圈外人',
-                    '高层和基层',
-                    '正式和非正式',
-                    '核心和边缘'
-                ],
-                correct: 0,
-                points: 20
-            },
-            '组织生命周期理论': {
-                question: '组织生命周期的阶段不包括？',
-                options: [
-                    '创业阶段',
-                    '聚合阶段',
-                    '规范化阶段',
-                    '静止阶段'
-                ],
-                correct: 3,
-                points: 20
-            },
-            '组织文化理论': {
-                question: '沙因组织文化理论中文化的层次不包括？',
-                options: [
-                    '人工制品',
-                    '价值观',
-                    '基本假设',
-                    '制度规范'
-                ],
-                correct: 3,
-                points: 20
-            },
-            '学习型组织': {
-                question: '圣吉学习型组织的五项修炼不包括？',
-                options: [
-                    '系统思考',
-                    '自我超越',
-                    '心智模式',
-                    '集中控制'
-                ],
-                correct: 3,
-                points: 20
-            },
-            '变革型领导': {
-                question: '变革型领导的特征不包括？',
-                options: [
-                    '理想化影响',
-                    '鼓舞性激励',
-                    '智力激发',
-                    '交易性奖励'
                 ],
                 correct: 3,
                 points: 20
@@ -2291,7 +2084,7 @@
 
                 document.getElementById('messageBox').innerHTML = `
                     🎉🎉🎉 恭喜你！你已经成功获得了100分！🎉🎉🎉<br><br>
-                    🏆 你完成了组织社会学的学习之旅！🏆<br><br>
+                    🏆 你完成了组织行为学的学习之旅！🏆<br><br>
                     📊 成绩统计：<br>
                     • 学号：${currentPlayer.studentId}<br>
                     • 姓名：${currentPlayer.name}<br>

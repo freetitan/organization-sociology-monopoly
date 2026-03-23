@@ -228,8 +228,6 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
-            width: 100%;
-            max-width: 650px;
         }
 
         .dice-section {
@@ -1027,11 +1025,9 @@
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <button class="reset-btn" onclick="manualSaveScore()" style="flex: 1; background: linear-gradient(145deg, #4caf50, #388e3c);">
-                        💾 保存进度
-                    </button>
-                    <button class="reset-btn" onclick="resetGame()" style="flex: 1;">
-                        🔄 重新开始
+                    <!-- 自动保存：每答对题目后自动保存 -->
+                    <button class="roll-btn" id="rollBtn" onclick="rollDice()">
+                        🎲 掷骰子
                     </button>
                 </div>
             </div>

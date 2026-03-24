@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>组织行为学大富翁</title>
+    <title>组织社会学大富翁</title>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -223,23 +223,21 @@
         }
 
         .controls {
-            margin-top: 15px;
+            margin-top: 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
         }
 
         .dice-section {
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: linear-gradient(145deg, #fff, #f8fafc);
-            padding: 15px 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            width: 100%;
-            justify-content: center;
+            gap: 20px;
+            background: linear-gradient(145deg, #fff, #f0f0f0);
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
 
         .dice {
@@ -902,7 +900,7 @@
     <!-- 登录界面 -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-card">
-            <h2>🎮 组织行为学大富翁 🏢</h2>
+            <h2>🎮 组织社会学大富翁 🏢</h2>
             <p class="login-subtitle">请输入您的信息开始学习之旅</p>
             <form class="login-form" id="loginForm" onsubmit="return handleLogin(event)">
                 <div class="form-group">
@@ -924,8 +922,8 @@
 
     <div class="container">
         <header>
-            <h1>🎮 组织行为学大富翁 🏢</h1>
-            <div class="subtitle">🌟 探索组织行为学的重要概念与理论 🌟</div>
+            <h1>🎮 组织社会学大富翁 🏢</h1>
+            <div class="subtitle">🌟 探索组织社会学的重要概念与理论 🌟</div>
         </header>
 
         <div class="game-container">
@@ -934,7 +932,6 @@
                     <!-- 棋盘格子将由JavaScript生成 -->
                 </div>
 
-                <!-- 掷骰子模块 - 放在地图下方 -->
                 <div class="controls">
                     <div class="dice-section">
                         <div class="dice" id="dice">⚀</div>
@@ -958,24 +955,6 @@
                     <button class="logout-btn" onclick="logout()">退出登录</button>
                 </div>
 
-                <!-- 题项模块 - 移到游戏状态前面 -->
-                <div class="concept-card hidden" id="conceptCard">
-                    <div class="concept-type" id="conceptType">理论</div>
-                    <h3 id="conceptTitle">理论名称</h3>
-                    <div class="question" id="conceptQuestion">问题描述</div>
-                    <div class="options" id="conceptOptions">
-                        <!-- 选项将由JavaScript生成 -->
-                    </div>
-                </div>
-
-                <div class="message-box">
-                    <h3>💬 游戏消息</h3>
-                    <div class="message-content" id="messageBox">
-                        🎉 欢迎来到组织行为学大富翁！<br><br>🎲 点击"掷骰子"开始游戏，探索组织行为学的重要概念和理论！<br><br>⚠️ 每人只能玩一次，请认真作答！
-                    </div>
-                </div>
-
-                <!-- 游戏状态 - 移到题项模块后面 -->
                 <div class="info-panel">
                     <h3>📊 游戏状态</h3>
                     <div class="stats">
@@ -1002,11 +981,27 @@
                     </div>
                 </div>
 
+                <div class="message-box">
+                    <h3>💬 游戏消息</h3>
+                    <div class="message-content" id="messageBox">
+                        🎉 欢迎来到组织社会学大富翁！<br><br>🎲 点击"掷骰子"开始游戏，探索组织社会学的重要概念和理论！
+                    </div>
+                </div>
+
+                <div class="concept-card hidden" id="conceptCard">
+                    <div class="concept-type" id="conceptType">理论</div>
+                    <h3 id="conceptTitle">理论名称</h3>
+                    <div class="question" id="conceptQuestion">问题描述</div>
+                    <div class="options" id="conceptOptions">
+                        <!-- 选项将由JavaScript生成 -->
+                    </div>
+                </div>
+
                 <!-- 排行榜 -->
                 <div class="leaderboard-panel" id="leaderboardPanel">
                     <h3>
                         <span>🏆 成绩排行榜</span>
-
+                        <button class="clear-scores-btn" onclick="clearLeaderboard()">清空本地</button>
                     </h3>
                     <div class="leaderboard-list" id="leaderboardList">
                         <div class="no-scores">暂无成绩记录</div>
@@ -1025,7 +1020,12 @@
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <!-- 进度自动保存 -->
+                    <button class="reset-btn" onclick="manualSaveScore()" style="flex: 1; background: linear-gradient(145deg, #4caf50, #388e3c);">
+                        💾 保存进度
+                    </button>
+                    <button class="reset-btn" onclick="resetGame()" style="flex: 1;">
+                        🔄 重新开始
+                    </button>
                 </div>
             </div>
         </div>
@@ -1114,13 +1114,6 @@
             }
             document.getElementById('playerNameError').style.display = 'none';
 
-            // 检查该学号是否已经玩过游戏
-            const playedStudents = JSON.parse(localStorage.getItem('playedStudents') || '[]');
-            if (playedStudents.includes(studentId)) {
-                alert('您已经玩过本游戏，每人限玩一次！');
-                return false;
-            }
-
             // 保存玩家信息
             currentPlayer = {
                 studentId: studentId,
@@ -1153,31 +1146,12 @@
             const savedPlayer = localStorage.getItem('currentPlayer');
             if (savedPlayer) {
                 currentPlayer = JSON.parse(savedPlayer);
-                
-                // 检查该学号是否已经玩过游戏（已完成游戏的玩家）
-                const playedStudents = JSON.parse(localStorage.getItem('playedStudents') || '[]');
-                if (playedStudents.includes(currentPlayer.studentId)) {
-                    // 已完成游戏的玩家，显示成绩但不能再玩
-                    document.getElementById('loginOverlay').classList.add('hidden');
-                    document.getElementById('displayName').textContent = currentPlayer.name;
-                    document.getElementById('displayStudentId').textContent = `学号: ${currentPlayer.studentId}`;
-                    
-                    // 显示已完成游戏的消息
-                    document.getElementById('rollBtn').disabled = true;
-                    document.getElementById('messageBox').innerHTML = '您已经完成过本游戏！每人限玩一次。您的成绩已保存。';
-
-                    gameState.startTime = new Date().toISOString();
-                    initGameBoard();
-                    updateLeaderboard();
-                } else {
-                    // 未完成游戏的玩家，可以继续游戏
-                    document.getElementById('displayName').textContent = currentPlayer.name;
-                    document.getElementById('displayStudentId').textContent = `学号: ${currentPlayer.studentId}`;
-                    document.getElementById('loginOverlay').classList.add('hidden');
-                    gameState.startTime = new Date().toISOString();
-                    initGameBoard();
-                    updateLeaderboard();
-                }
+                document.getElementById('displayName').textContent = currentPlayer.name;
+                document.getElementById('displayStudentId').textContent = `学号: ${currentPlayer.studentId}`;
+                document.getElementById('loginOverlay').classList.add('hidden');
+                gameState.startTime = new Date().toISOString();
+                initGameBoard();
+                updateLeaderboard();
             }
         }
 
@@ -1258,13 +1232,6 @@
 
             // 更新显示
             updateLeaderboard();
-
-            // 标记该学号已玩过游戏
-            const playedStudents = JSON.parse(localStorage.getItem('playedStudents') || '[]');
-            if (!playedStudents.includes(currentPlayer.studentId)) {
-                playedStudents.push(currentPlayer.studentId);
-                localStorage.setItem('playedStudents', JSON.stringify(playedStudents));
-            }
         }
 
         // 本地存储成绩
@@ -1363,7 +1330,13 @@
             return `${mins}分${secs}秒`;
         }
 
-
+        // 清空排行榜
+        function clearLeaderboard() {
+            if (confirm('确定要清空所有成绩记录吗？此操作不可恢复！')) {
+                localStorage.removeItem('leaderboard');
+                updateLeaderboard();
+            }
+        }
 
         // 导出成绩（CSV格式）
         function exportScores() {
@@ -1381,7 +1354,7 @@
             const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `组织行为学成绩_${new Date().toLocaleDateString('zh-CN')}.csv`;
+            link.download = `组织社会学成绩_${new Date().toLocaleDateString('zh-CN')}.csv`;
             link.click();
         }
 
@@ -1448,10 +1421,10 @@
             [1, 5], [1, 4], [1, 3], [1, 2], [2, 1]
         ];
 
-        // 组织行为学概念和理论问题库
+        // 组织社会学概念和理论问题库
         const conceptQuestions = {
             '组织': {
-                question: '组织行为学中，"组织"最基本的特征是什么？',
+                question: '组织社会学中，"组织"最基本的特征是什么？',
                 options: [
                     '有明确的目标',
                     '有严格的层级结构',
@@ -1495,7 +1468,7 @@
                 points: 10
             },
             '权力': {
-                question: '在组织行为学中，权力的来源不包括？',
+                question: '在组织社会学中，权力的来源不包括？',
                 options: [
                     '法定权力',
                     '奖赏权力',
@@ -1947,7 +1920,7 @@
                     handleChance();
                     break;
                 case 'start':
-                    messageBox.innerHTML = `🏁 你回到了起点！<br><br>🌟 继续探索组织行为学的知识吧！`;
+                    messageBox.innerHTML = `🏁 你回到了起点！<br><br>🌟 继续探索组织社会学的知识吧！`;
                     resetGameState();
                     break;
             }
@@ -2059,7 +2032,7 @@
 
                 document.getElementById('messageBox').innerHTML = `
                     🎉🎉🎉 恭喜你！你已经成功获得了100分！🎉🎉🎉<br><br>
-                    🏆 你完成了组织行为学的学习之旅！🏆<br><br>
+                    🏆 你完成了组织社会学的学习之旅！🏆<br><br>
                     📊 成绩统计：<br>
                     • 学号：${currentPlayer.studentId}<br>
                     • 姓名：${currentPlayer.name}<br>
